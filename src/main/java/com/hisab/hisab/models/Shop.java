@@ -1,6 +1,8 @@
 package com.hisab.hisab.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +11,29 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Shop {
-    private List<Product> products;
-    private List<User> users;
+public class Shop extends BaseModel {
     private int opensAt;
     private int closesAt;
+    private String phone;
+
+    @OneToMany(mappedBy = "shop")
+    private List<Product> products;
+
+    @ManyToMany
+    private List<User> users;
+
+    @OneToMany(mappedBy = "shop")
     private List<Order> orders;
+
+    @OneToMany
     private List<Category> categories;
+
+    @OneToMany
     private List<Credit> credits;
+
+    @ManyToMany
     private List<PaymentType> paymentTypes;
+
+    @OneToMany
     private List<Party> parties;
 }

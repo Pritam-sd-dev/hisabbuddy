@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Variant {
+public class Variant extends BaseModel{
     private int id;
     private String name;
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Image {
+public class Image extends BaseModel {
     private String link;
 }

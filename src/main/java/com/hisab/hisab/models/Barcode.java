@@ -7,6 +7,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Barcode {
+public class Barcode extends BaseModel {
     private String code;
 }
