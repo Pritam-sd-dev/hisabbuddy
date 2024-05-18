@@ -8,6 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Variant extends BaseModel{
-    private int id;
     private String name;
 }

@@ -35,9 +35,9 @@ public class CategoryService {
         Shop shop = shopOptional.get();
 
         Category newCategory = new Category();
+        newCategory.setShop(shop);
         newCategory.setImage(imageLink);
         newCategory.setName(name);
-        newCategory.setShop(shop);
 
         return  categoryRepository.save(newCategory);
     }

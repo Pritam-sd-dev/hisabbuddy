@@ -1,8 +1,6 @@
 package com.hisab.hisab.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +29,8 @@ public class Shop extends BaseModel {
     @OneToMany
     private List<Credit> credits;
 
-    @ManyToMany
+    @ElementCollection
+    @Enumerated(EnumType.ORDINAL)
     private List<PaymentType> paymentTypes;
 
     @OneToMany

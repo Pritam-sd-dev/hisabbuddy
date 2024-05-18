@@ -7,5 +7,5 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Party {
+public class Party extends BaseModel {
 }
