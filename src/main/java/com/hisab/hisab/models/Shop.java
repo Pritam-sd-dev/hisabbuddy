@@ -25,7 +25,7 @@ public class Shop extends BaseModel {
     @OneToMany(mappedBy = "shop")
     private List<Order> orders;
 
-    @OneToMany
+    @OneToMany(mappedBy = "shop")
     private List<Category> categories;
 
     @OneToMany
