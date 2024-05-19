@@ -25,7 +25,7 @@ public class ShopService {
         this.userRepository = userRepository;
     }
 
-    public Shop addNewShop(String shopName, Long ownerId, int opensAt, int closesAt) throws Exception {
+    public Shop addNewShop(String shopName, String phone, Long ownerId, int opensAt, int closesAt) throws Exception {
 
         Optional<User> optionalUser = userRepository.findById(ownerId);
 
@@ -40,6 +40,7 @@ public class ShopService {
         Shop shop = new Shop();
         shop.setOwner(optionalUser.get());
         shop.setName(shopName);
+        shop.setPhone(phone);
         shop.setOpensAt(opensAt);
         shop.setClosesAt(closesAt);
 

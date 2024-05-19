@@ -21,6 +21,7 @@ public class ShopController {
     public NewShopResponseDto addNewShop(@RequestBody NewShopRequestDto requestDto) throws Exception {
         Shop shop = shopService.addNewShop(
                         requestDto.getShopName(),
+                        requestDto.getPhone(),
                         requestDto.getOwnerId(),
                         requestDto.getOpensAt(),
                         requestDto.getClosesAt()

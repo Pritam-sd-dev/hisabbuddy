@@ -10,4 +10,5 @@ public class NewShopRequestDto {
     private Long ownerId;
     private int opensAt;
     private int closesAt;
+    private String phone;
 }
