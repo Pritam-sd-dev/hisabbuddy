@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NewCategoryRequestDto {
-    private String name;
-    private String image;
+public class NewShopResponseDto {
     private Long shopId;
+    private String shopName;
+    private int closesAt;
+    private int opensAt;
 }

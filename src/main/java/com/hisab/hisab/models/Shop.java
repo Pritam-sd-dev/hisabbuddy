@@ -13,6 +13,7 @@ public class Shop extends BaseModel {
     private int opensAt;
     private int closesAt;
     private String phone;
+    private String name;
 
     @OneToMany(mappedBy = "shop")
     private List<Product> products;
@@ -35,4 +36,7 @@ public class Shop extends BaseModel {
 
     @OneToMany
     private List<Party> parties;
+
+    @ManyToOne
+    private User owner;
 }

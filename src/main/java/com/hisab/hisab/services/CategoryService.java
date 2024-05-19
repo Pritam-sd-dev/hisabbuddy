@@ -1,6 +1,7 @@
 package com.hisab.hisab.services;
 
 import com.hisab.hisab.exceptions.NotFoundException;
+import com.hisab.hisab.exceptions.ResourceAlreadyExistsException;
 import com.hisab.hisab.models.Category;
 import com.hisab.hisab.models.Shop;
 import com.hisab.hisab.repositories.CategoryRepository;
@@ -25,11 +26,17 @@ public class CategoryService {
         this.shopRepository = shopRepository;
     }
 
-    public Category addCategory(String name, String imageLink, Long shopId) throws NotFoundException {
+    public Category addCategory(String name, String imageLink, Long shopId) throws NotFoundException, ResourceAlreadyExistsException {
         Optional<Shop> shopOptional = shopRepository.findById(shopId);
 
         if(shopOptional.isEmpty()) {
             throw new NotFoundException("Shop not found with id: " + shopId);
+        }
+
+        Optional<Category> categoryOptional = categoryRepository.findByNameAndShopId(name, shopId);
+
+        if(categoryOptional.isPresent()) {
+            throw new ResourceAlreadyExistsException("Category with name: " + name + " already exists");
         }
 
         Shop shop = shopOptional.get();
