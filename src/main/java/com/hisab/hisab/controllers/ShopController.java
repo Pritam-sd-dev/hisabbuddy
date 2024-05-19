@@ -1,10 +1,14 @@
 package com.hisab.hisab.controllers;
 
+import com.hisab.hisab.dtos.ExceptionDto;
 import com.hisab.hisab.dtos.NewShopRequestDto;
 import com.hisab.hisab.dtos.NewShopResponseDto;
 import com.hisab.hisab.models.Shop;
 import com.hisab.hisab.services.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +38,11 @@ public class ShopController {
         responseDto.setOpensAt(shop.getOpensAt());
 
         return responseDto;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionDto> handleException(Exception e) {
+        return new ResponseEntity<>(new ExceptionDto(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
