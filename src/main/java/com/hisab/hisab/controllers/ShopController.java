@@ -1,28 +1,37 @@
 package com.hisab.hisab.controllers;
 
-import com.hisab.hisab.dtos.ExceptionDto;
 import com.hisab.hisab.dtos.NewShopRequestDto;
 import com.hisab.hisab.dtos.NewShopResponseDto;
 import com.hisab.hisab.models.Shop;
+import com.hisab.hisab.security.JwtData;
+import com.hisab.hisab.security.TokenValidator;
 import com.hisab.hisab.services.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ShopController {
 
-    ShopService shopService;
+    private ShopService shopService;
+    private TokenValidator tokenValidator;
 
     @Autowired
-    ShopController(ShopService shopService) {
+    ShopController(ShopService shopService, TokenValidator tokenValidator) {
         this.shopService = shopService;
+        this.tokenValidator = tokenValidator;
     }
 
-    public NewShopResponseDto addNewShop(@RequestBody NewShopRequestDto requestDto) throws Exception {
+    @PostMapping("/shops")
+    public NewShopResponseDto addNewShop(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @RequestBody NewShopRequestDto requestDto
+    ) throws Exception {
         Shop shop = shopService.addNewShop(
                         requestDto.getShopName(),
                         requestDto.getPhone(),
@@ -40,9 +49,9 @@ public class ShopController {
         return responseDto;
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionDto> handleException(Exception e) {
-        return new ResponseEntity<>(new ExceptionDto(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/shops")
+    public ResponseEntity<List<Shop>> getAllShops() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        return null;
     }
-
 }

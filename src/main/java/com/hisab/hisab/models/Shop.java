@@ -18,7 +18,13 @@ public class Shop extends BaseModel {
     @OneToMany(mappedBy = "shop")
     private List<Product> products;
 
+    // important
     @ManyToMany
+    @JoinTable(
+            name = "shop_users",
+            joinColumns = @JoinColumn(name = "shop_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> users;
 
     @OneToMany(mappedBy = "shop")

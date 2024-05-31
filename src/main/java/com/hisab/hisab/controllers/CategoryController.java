@@ -7,13 +7,12 @@ import com.hisab.hisab.exceptions.NotFoundException;
 import com.hisab.hisab.exceptions.ResourceAlreadyExistsException;
 import com.hisab.hisab.models.Category;
 import com.hisab.hisab.services.CategoryService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -38,14 +37,14 @@ public class CategoryController {
         return responseDto;
     }
 
-
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionDto> handleNotFoundException(NotFoundException e) {
-        return new ResponseEntity<>(new ExceptionDto(HttpStatus.NOT_FOUND, e.getMessage()), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
+
     @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ExceptionDto> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
-        return new ResponseEntity<>(new ExceptionDto(HttpStatus.ALREADY_REPORTED, e.getMessage()), HttpStatus.ALREADY_REPORTED);
+    public ResponseEntity<Object> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.ALREADY_REPORTED);
     }
 }

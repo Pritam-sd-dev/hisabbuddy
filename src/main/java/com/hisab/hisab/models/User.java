@@ -13,11 +13,10 @@ public class User extends BaseModel {
     private String name;
     private String phone;
 
-    @Enumerated(EnumType.ORDINAL)
-    private UserType userType;
     private int age;
 
-    @OneToOne
+    // important
+    @OneToOne(cascade = {CascadeType.REMOVE})
     private Image image;
 
     @OneToMany(mappedBy = "user")
