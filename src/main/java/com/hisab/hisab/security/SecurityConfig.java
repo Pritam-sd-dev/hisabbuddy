@@ -26,19 +26,12 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
         http
+                .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/shops").hasAuthority("shop_admin")
                         .anyRequest().authenticated()
                 ).addFilterBefore(new AuthenticationFilter(this.tokenValidator), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex ->
                         ex.accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpStatus.OK.value())));
         return http.build();
     }
-
-    @Autowired
-    public AuthenticationFilter getAuthenticationFilter(AuthenticationFilter authenticationFilter) {
-        return authenticationFilter;
-    }
-
-
 }

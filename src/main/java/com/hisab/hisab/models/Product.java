@@ -32,7 +32,7 @@ public class Product extends BaseModel {
 
     private int packingTime;
 
-    @Enumerated(EnumType.ORDINAL)
+    @OneToOne
     private Unit unit;
 
     @OneToMany

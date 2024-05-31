@@ -1,4 +1,8 @@
 package com.hisab.hisab.models;
 
-public enum Unit {
+import jakarta.persistence.Entity;
+
+@Entity
+public class Unit extends BaseModel {
+    String name;
 }

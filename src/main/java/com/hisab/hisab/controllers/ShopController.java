@@ -2,12 +2,14 @@ package com.hisab.hisab.controllers;
 
 import com.hisab.hisab.dtos.NewShopRequestDto;
 import com.hisab.hisab.dtos.NewShopResponseDto;
+import com.hisab.hisab.dtos.ShopResponseDto;
 import com.hisab.hisab.models.Shop;
 import com.hisab.hisab.security.JwtData;
 import com.hisab.hisab.security.TokenValidator;
 import com.hisab.hisab.services.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,6 @@ public class ShopController {
 
     @PostMapping("/shops")
     public NewShopResponseDto addNewShop(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
             @RequestBody NewShopRequestDto requestDto
     ) throws Exception {
         Shop shop = shopService.addNewShop(
@@ -50,8 +51,7 @@ public class ShopController {
     }
 
     @GetMapping("/shops")
-    public ResponseEntity<List<Shop>> getAllShops() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        return null;
+    public List<ShopResponseDto> getAllShopsByOwnerId(@RequestParam Long ownerId) throws Exception {
+        return shopService.getAllShopByOwner(ownerId);
     }
 }

@@ -1,5 +1,6 @@
 package com.hisab.hisab.services;
 
+import com.hisab.hisab.dtos.ShopResponseDto;
 import com.hisab.hisab.exceptions.NotFoundException;
 import com.hisab.hisab.models.Shop;
 import com.hisab.hisab.models.User;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +29,6 @@ public class ShopService {
         this.userRepository = userRepository;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRODUCT_OPERATION')")
     public Shop addNewShop(String shopName, String phone, Long ownerId, int opensAt, int closesAt) throws Exception {
 
         Optional<User> optionalUser = userRepository.findById(ownerId);
@@ -47,6 +49,23 @@ public class ShopService {
         shop.setClosesAt(closesAt);
 
         return shopRepository.save(shop);
+    }
+
+    public List<ShopResponseDto> getAllShopByOwner(Long ownerId) throws Exception {
+        List<Shop> shops = shopRepository.findAllByOwnerId(ownerId);
+        
+        List<ShopResponseDto> responseDtos = new ArrayList<>();
+        for(Shop shop : shops) {
+            ShopResponseDto responseDto = new ShopResponseDto();
+            responseDto.setShopName(shop.getName());
+            responseDto.setPhone(shop.getPhone());
+            responseDto.setOpensAt(shop.getOpensAt());
+            responseDto.setClosesAt(shop.getClosesAt());
+            responseDto.setOwnerId(shop.getOwner().getId());
+            responseDto.setShopId(shop.getId());
+            responseDtos.add(responseDto);
+        }
+        return responseDtos;
     }
 
 }
