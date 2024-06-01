@@ -23,4 +23,5 @@ public class NewProductRequestDto {
     private long variantId;
     private long unitId;
     private long shopId;
+    private String unitName;
 }

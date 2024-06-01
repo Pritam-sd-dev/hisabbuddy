@@ -3,7 +3,6 @@ package com.hisab.hisab.controllers;
 import com.hisab.hisab.dtos.NewProductRequestDto;
 import com.hisab.hisab.exceptions.ResourceAlreadyExistsException;
 import com.hisab.hisab.models.Product;
-import com.hisab.hisab.repositories.ProductRepository;
 import com.hisab.hisab.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +18,10 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public void addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
+    public NewProductRequestDto addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
         Product product = productService.addNewProduct(requestDto);
+        NewProductRequestDto responseDto = productToNewProductRequestDto(product);
+        return responseDto;
     }
 
 
@@ -28,9 +29,20 @@ public class ProductController {
         NewProductRequestDto newProductRequestDto = new NewProductRequestDto();
         newProductRequestDto.setName(product.getName());
         newProductRequestDto.setPrice(product.getPrice());
+        newProductRequestDto.setSellingPrice(product.getSellingPrice());
+        newProductRequestDto.setPurchasePrice(product.getPurchasePrice());
+        newProductRequestDto.setMinQuantity(product.getMinQuantity());
         newProductRequestDto.setQuantity(product.getQuantity());
-        newProductRequestDto.setQuantity(product.getQuantity());
-        newProductRequestDto.setPrice(product.getPrice());
+        newProductRequestDto.setPackingTime(product.getPackingTime());
+        newProductRequestDto.setManufacturedDate(product.getManufacturedDate());
+        newProductRequestDto.setExpiryDate(product.getExpiryDate());
+        newProductRequestDto.setPurchasedDate(product.getPurchasedDate());
+        newProductRequestDto.setBarcode(product.getBarcode().getCode());
+        newProductRequestDto.setCategoryId(product.getCategory().getId());
+        newProductRequestDto.setVariantId(product.getVariant().getId());
+        newProductRequestDto.setShopId(product.getShop().getId());
+        newProductRequestDto.setUnitId(product.getUnit().getId());
+        newProductRequestDto.setUnitName(product.getUnit().getName());
         return newProductRequestDto;
     }
 
