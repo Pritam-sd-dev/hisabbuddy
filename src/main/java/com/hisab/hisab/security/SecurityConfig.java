@@ -15,11 +15,11 @@ import org.springframework.web.client.RestTemplate;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    TokenValidator tokenValidator;
+    AuthenticationFilter authenticationFilter;
 
     @Autowired
-    public SecurityConfig(TokenValidator tokenValidator) {
-        this.tokenValidator = tokenValidator;
+    public SecurityConfig(TokenValidator tokenValidator, AuthenticationFilter authenticationFilter) {
+        this.authenticationFilter = authenticationFilter;
     }
 
     @Bean
@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated()
-                ).addFilterBefore(new AuthenticationFilter(this.tokenValidator), UsernamePasswordAuthenticationFilter.class)
+                ).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex ->
                         ex.accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpStatus.OK.value())));
         return http.build();

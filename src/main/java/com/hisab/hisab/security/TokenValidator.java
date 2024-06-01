@@ -26,7 +26,6 @@ public class TokenValidator {
         ValidateRequestDto requestDto = new ValidateRequestDto();
         requestDto.setToken(token);
         ResponseEntity<JwtData> responseEntity = restTemplate.postForEntity("http://localhost:9000/auth/validate", requestDto, JwtData.class);
-        Optional<JwtData> jwtData = Optional.ofNullable(responseEntity.getBody());
-        return jwtData;
+        return Optional.ofNullable(responseEntity.getBody());
     }
 }
