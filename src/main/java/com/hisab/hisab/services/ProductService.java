@@ -7,6 +7,8 @@ import com.hisab.hisab.models.*;
 import com.hisab.hisab.repositories.*;
 import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class ProductService {
     private ProductRepository productRepository;
     private BarcodeRepository barcodeRepository;
+    private BarcodeService barcodeService;
     private CategoryRepository categoryRepository;
     private ShopRepository shopRepository;
     private UnitRepository unitRepository;
@@ -27,7 +30,8 @@ public class ProductService {
             CategoryRepository categoryRepository,
             ShopRepository shopRepository,
             UnitRepository unitRepository,
-            VariantRepository variantRepository
+            VariantRepository variantRepository,
+            BarcodeService barcodeService
     ) {
         this.productRepository = productRepository;
         this.barcodeRepository = barcodeRepository;
@@ -35,10 +39,11 @@ public class ProductService {
         this.shopRepository = shopRepository;
         this.unitRepository = unitRepository;
         this.variantRepository = variantRepository;
+        this.barcodeService = barcodeService;
     }
 
     public Product addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
-
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Barcode> barcodeOptional = barcodeRepository.findByCode(requestDto.getBarcode());
         if(barcodeOptional.isPresent()) {
             throw new ResourceAlreadyExistsException("Barcode: "+requestDto.getBarcode()+" already exists");
@@ -49,7 +54,7 @@ public class ProductService {
             throw new NotFoundException("category not found with id: "+requestDto.getCategoryId());
         }
 
-        Optional<Shop> shopOptional = shopRepository.findById(requestDto.getShopId());
+        Optional<Shop> shopOptional = shopRepository.findByUserIdAndShopId(userId, requestDto.getShopId());
         if(shopOptional.isEmpty()) {
             throw new NotFoundException("shop not found with id: "+requestDto.getShopId());
         }
@@ -70,14 +75,13 @@ public class ProductService {
             savedVariant = variantOptional.get();
         }
 
-        Barcode barcode = barcodeOptional.get();
         Category category = categoryOptional.get();
         Shop shop = shopOptional.get();
         Unit unit = unitOptional.get();
 
+        Barcode barcode = barcodeService.createBarcode(requestDto.getBarcode());
 
         Product product = new Product();
-
         product.setName(requestDto.getName());
         product.setPrice(requestDto.getPrice());
         product.setSellingPrice(requestDto.getSellingPrice());
@@ -94,7 +98,6 @@ public class ProductService {
         product.setUnit(unit);
         product.setVariant(savedVariant);
 
-        Product savedProduct = productRepository.save(product);
-        return savedProduct;
+        return productRepository.save(product);
     }
 }

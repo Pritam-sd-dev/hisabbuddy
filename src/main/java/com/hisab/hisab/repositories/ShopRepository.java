@@ -20,5 +20,10 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
                     "(select shop_id from shop_access_users where access_users_id = :userId)"
             , nativeQuery = true
     )
-    Optional<User> findAllByUser(Long userId);
+    List<Shop> findAllByUser(Long userId);
+
+    @Query(value = "select * from shop where shop.id = " +
+            "(select shop_id from shop_access_users where shop_id = :shopId and access_users_id = :userId) ",
+            nativeQuery = true)
+    Optional<Shop> findByUserIdAndShopId(Long userId, Long shopId);
 }
