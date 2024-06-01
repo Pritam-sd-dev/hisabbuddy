@@ -7,7 +7,6 @@ import com.hisab.hisab.models.User;
 import com.hisab.hisab.repositories.ShopRepository;
 import com.hisab.hisab.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class ShopService {
         return shopRepository.save(shop);
     }
 
-    public List<ShopResponseDto> getAllShopByOwner(Long ownerId) throws Exception {
+    public List<ShopResponseDto> getAllShopByUser(Long ownerId) throws Exception {
         List<Shop> shops = shopRepository.findAllByOwnerId(ownerId);
         
         List<ShopResponseDto> responseDtos = new ArrayList<>();

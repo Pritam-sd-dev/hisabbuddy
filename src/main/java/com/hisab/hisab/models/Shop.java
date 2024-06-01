@@ -45,4 +45,7 @@ public class Shop extends BaseModel {
 
     @ManyToOne
     private User owner;
+
+    @ManyToMany
+    private List<User> accessUsers;
 }
