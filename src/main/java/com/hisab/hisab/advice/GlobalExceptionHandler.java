@@ -13,11 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {NotFoundException.class })
-    protected ResponseEntity<Object> handleConflict(RuntimeException e, WebRequest request) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(value = {ResourceAlreadyExistsException.class})
     protected ResponseEntity<Object> handleResourceAlreadyExists(RuntimeException e, WebRequest request) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);

@@ -39,7 +39,7 @@ public class ProductService {
 
     public Product addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
 
-        Optional<Barcode> barcodeOptional = barcodeRepository.findByBarcode(requestDto.getBarcode());
+        Optional<Barcode> barcodeOptional = barcodeRepository.findByCode(requestDto.getBarcode());
         if(barcodeOptional.isPresent()) {
             throw new ResourceAlreadyExistsException("Barcode: "+requestDto.getBarcode()+" already exists");
         }
