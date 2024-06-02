@@ -33,7 +33,7 @@ public class Product extends BaseModel {
 
     private int packingTime;
 
-    @OneToOne
+    @ManyToOne
     private Unit unit;
 
     @OneToMany

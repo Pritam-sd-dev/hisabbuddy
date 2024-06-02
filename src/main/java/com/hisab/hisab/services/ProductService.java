@@ -42,7 +42,13 @@ public class ProductService {
 
     public Product addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Barcode> barcodeOptional = barcodeRepository.findByCode(requestDto.getBarcode());
+
+        Optional<Shop> shopOptional = shopRepository.findByUserIdAndShopId(userId, requestDto.getShopId());
+        if(shopOptional.isEmpty()) {
+            throw new NotFoundException("shop not found with id: "+requestDto.getShopId());
+        }
+
+        Optional<Barcode> barcodeOptional = barcodeRepository.findBycodeAndShop_Id(requestDto.getBarcode(), requestDto.getShopId());
         if(barcodeOptional.isPresent()) {
             throw new ResourceAlreadyExistsException("Barcode: "+requestDto.getBarcode()+" already exists");
         }
@@ -52,17 +58,13 @@ public class ProductService {
             throw new NotFoundException("category not found with id: "+requestDto.getCategoryId());
         }
 
-        Optional<Shop> shopOptional = shopRepository.findByUserIdAndShopId(userId, requestDto.getShopId());
-        if(shopOptional.isEmpty()) {
-            throw new NotFoundException("shop not found with id: "+requestDto.getShopId());
-        }
 
         Optional<Unit> unitOptional = unitRepository.findById(requestDto.getUnitId());
         if(unitOptional.isEmpty()) {
             throw new NotFoundException("unit not found with id: "+requestDto.getUnitId());
         }
         Variant savedVariant = null;
-        if(requestDto.getUnitId() == 0) {
+        if(requestDto.getVariantId() == 0) {
             Variant newVariant = new Variant();
             savedVariant = variantRepository.save(newVariant);
         } else {
@@ -77,7 +79,7 @@ public class ProductService {
         Shop shop = shopOptional.get();
         Unit unit = unitOptional.get();
 
-        Barcode barcode = barcodeService.createBarcode(requestDto.getBarcode());
+        Barcode barcode = barcodeService.createBarcode(requestDto.getBarcode(), shop);
 
         Product product = new Product();
         product.setName(requestDto.getName());
