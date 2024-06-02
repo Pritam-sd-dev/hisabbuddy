@@ -1,33 +1,54 @@
 package com.hisab.hisab.controllers;
 
-import com.hisab.hisab.dtos.NewProductRequestDto;
+import com.hisab.hisab.dtos.GeneralProductDto;
 import com.hisab.hisab.exceptions.ResourceAlreadyExistsException;
 import com.hisab.hisab.models.Product;
+import com.hisab.hisab.repositories.ProductRepository;
 import com.hisab.hisab.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class ProductController {
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductRepository productRepository) {
         this.productService = productService;
+        this.productRepository = productRepository;
     }
 
     @PostMapping("/products")
-    public NewProductRequestDto addNewProduct(@RequestBody NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
+    public GeneralProductDto addNewProduct(@RequestBody GeneralProductDto requestDto) throws ResourceAlreadyExistsException {
         Product product = productService.addNewProduct(requestDto);
-        NewProductRequestDto responseDto = productToNewProductRequestDto(product);
+        GeneralProductDto responseDto = productToNewProductRequestDto(product);
         return responseDto;
     }
 
+    @GetMapping("/products")
+    public List<GeneralProductDto> getAllProductsByBarCode(@RequestParam String barcode, @RequestParam Long shopId) {
+        List<Product> products = productRepository.findAllByBarcode_CodeAndShop_Id(barcode, shopId);
 
-    public NewProductRequestDto productToNewProductRequestDto(Product product) {
-        NewProductRequestDto newProductRequestDto = new NewProductRequestDto();
+        if(products.isEmpty()) {
+            return null;
+        }
+
+        List<GeneralProductDto> responseList = new ArrayList<>();
+        for(Product product : products) {
+            GeneralProductDto responseDto = productToNewProductRequestDto(product);
+            responseList.add(responseDto);
+        }
+
+        return responseList;
+    }
+
+
+    public GeneralProductDto productToNewProductRequestDto(Product product) {
+        GeneralProductDto newProductRequestDto = new GeneralProductDto();
         newProductRequestDto.setId(product.getId());
         newProductRequestDto.setName(product.getName());
         newProductRequestDto.setPrice(product.getPrice());

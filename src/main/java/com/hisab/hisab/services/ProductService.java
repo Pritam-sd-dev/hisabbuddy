@@ -1,6 +1,6 @@
 package com.hisab.hisab.services;
 
-import com.hisab.hisab.dtos.NewProductRequestDto;
+import com.hisab.hisab.dtos.GeneralProductDto;
 import com.hisab.hisab.exceptions.NotFoundException;
 import com.hisab.hisab.exceptions.ResourceAlreadyExistsException;
 import com.hisab.hisab.models.*;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,7 +41,7 @@ public class ProductService {
         this.barcodeService = barcodeService;
     }
 
-    public Product addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
+    public Product addNewProduct(GeneralProductDto requestDto) throws ResourceAlreadyExistsException {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Optional<Shop> shopOptional = shopRepository.findByUserIdAndShopId(userId, requestDto.getShopId());
@@ -99,5 +100,9 @@ public class ProductService {
         product.setVariant(savedVariant);
 
         return productRepository.save(product);
+    }
+
+    public List<Product> getProductByBarcodeAndShop(String barcode, Long shopId) {
+        return productRepository.findAllByBarcode_CodeAndShop_Id(barcode, shopId);
     }
 }

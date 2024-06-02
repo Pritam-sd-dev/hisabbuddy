@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class NewProductRequestDto {
+public class GeneralProductDto {
     private Long id;
     private String name;
     private int price;
