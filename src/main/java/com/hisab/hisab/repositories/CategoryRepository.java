@@ -16,6 +16,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Override
     Optional<Category> findById(Long id);
 
+    @Override
+    void deleteById(Long aLong);
+
     // important
 //    @Query(value = "select * from categories where name = :name and shop_id= :id", nativeQuery = true)
 //    Category findCategory(String name, Long id);

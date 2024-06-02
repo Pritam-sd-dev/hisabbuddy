@@ -1,9 +1,6 @@
 package com.hisab.hisab.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -21,7 +18,7 @@ public class Category extends BaseModel {
     @ManyToOne
     private Shop shop;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 //    @Fetch(FetchMode.SELECT)
     private List<Product> products;
 }
