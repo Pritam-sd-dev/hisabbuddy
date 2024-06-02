@@ -124,4 +124,8 @@ public class ProductService {
             barcodeRepository.deleteById(product.getBarcode().getId());
         }
     }
+
+    public List<Product> getProductsByShop(Long shopId) {
+        return productRepository.findAllByShop_Id(shopId);
+    }
 }

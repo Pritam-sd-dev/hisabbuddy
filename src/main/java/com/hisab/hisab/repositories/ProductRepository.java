@@ -11,6 +11,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByBarcode_CodeAndShop_Id(String code, Long shopId);
 
+    List<Product> findAllByShop_Id(Long shopId);
+
+    List<Product> findAllByCategory_Id(Long categoryId);
+
     Long countAllByBarcode_CodeAndShop_Id(String code, Long shopId);
 
     @Override

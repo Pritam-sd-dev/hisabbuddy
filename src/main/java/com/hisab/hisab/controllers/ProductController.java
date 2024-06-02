@@ -29,8 +29,9 @@ public class ProductController {
         return responseDto;
     }
 
-    @GetMapping("/products")
-    public List<GeneralProductDto> getAllProductsByBarCode(@RequestParam String barcode, @RequestParam Long shopId) {
+    @GetMapping("/products/barcode")
+    public List<GeneralProductDto> getAllProductsByBarCode(@RequestParam("barcode") String barcode,
+                                                           @RequestParam("shop_id") Long shopId) {
         List<Product> products = productRepository.findAllByBarcode_CodeAndShop_Id(barcode, shopId);
 
         if(products.isEmpty()) {
@@ -51,6 +52,16 @@ public class ProductController {
         productService.deleteProductById(productId);
     }
 
+    @GetMapping("/products/shop/{id}")
+    public List<GeneralProductDto> getAllProductsByShopId(@PathVariable("id") Long shopId) {
+        List<Product> products = productService.getProductsByShop(shopId);
+        List<GeneralProductDto> responseList = new ArrayList<>();
+        for(Product product : products) {
+            GeneralProductDto responseDto = productToNewProductRequestDto(product);
+            responseList.add(responseDto);
+        }
+        return responseList;
+    }
 
     public GeneralProductDto productToNewProductRequestDto(Product product) {
         GeneralProductDto newProductRequestDto = new GeneralProductDto();
