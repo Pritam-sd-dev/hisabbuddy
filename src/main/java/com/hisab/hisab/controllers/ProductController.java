@@ -51,7 +51,7 @@ public class ProductController {
         GeneralProductDto newProductRequestDto = new GeneralProductDto();
         newProductRequestDto.setId(product.getId());
         newProductRequestDto.setName(product.getName());
-        newProductRequestDto.setPrice(product.getPrice());
+        newProductRequestDto.setMrp(product.getMrp());
         newProductRequestDto.setSellingPrice(product.getSellingPrice());
         newProductRequestDto.setPurchasePrice(product.getPurchasePrice());
         newProductRequestDto.setMinQuantity(product.getMinQuantity());

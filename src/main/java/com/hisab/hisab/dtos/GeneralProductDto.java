@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class GeneralProductDto {
     private Long id;
     private String name;
-    private int price;
+    private int mrp;
     private int sellingPrice;
     private int purchasePrice;
     private int minQuantity;

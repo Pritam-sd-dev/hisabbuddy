@@ -84,7 +84,7 @@ public class ProductService {
 
         Product product = new Product();
         product.setName(requestDto.getName());
-        product.setPrice(requestDto.getPrice());
+        product.setMrp(requestDto.getMrp());
         product.setSellingPrice(requestDto.getSellingPrice());
         product.setPurchasePrice(requestDto.getPurchasePrice());
         product.setQuantity(requestDto.getQuantity());
