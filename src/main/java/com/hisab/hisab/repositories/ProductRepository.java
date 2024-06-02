@@ -11,6 +11,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByBarcode_CodeAndShop_Id(String code, Long shopId);
 
+    Long countAllByBarcode_CodeAndShop_Id(String code, Long shopId);
+
     @Override
     void deleteById(Long aLong);
 }

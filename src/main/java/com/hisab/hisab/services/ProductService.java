@@ -107,6 +107,21 @@ public class ProductService {
     }
 
     public void deleteProductById(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if(productOptional.isEmpty()) {
+            throw new NotFoundException("product not found with id: "+productId);
+        }
+        Product product = productOptional.get();
+
         productRepository.deleteById(productId);
+
+        Long count = productRepository.countAllByBarcode_CodeAndShop_Id(
+                product.getBarcode().getCode(),
+                product.getShop().getId());
+
+
+        if(count == 0) {
+            barcodeRepository.deleteById(product.getBarcode().getId());
+        }
     }
 }
