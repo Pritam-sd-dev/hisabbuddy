@@ -6,6 +6,7 @@ import com.hisab.hisab.models.Product;
 import com.hisab.hisab.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +19,7 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public NewProductRequestDto addNewProduct(NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
+    public NewProductRequestDto addNewProduct(@RequestBody NewProductRequestDto requestDto) throws ResourceAlreadyExistsException {
         Product product = productService.addNewProduct(requestDto);
         NewProductRequestDto responseDto = productToNewProductRequestDto(product);
         return responseDto;
@@ -27,6 +28,7 @@ public class ProductController {
 
     public NewProductRequestDto productToNewProductRequestDto(Product product) {
         NewProductRequestDto newProductRequestDto = new NewProductRequestDto();
+        newProductRequestDto.setId(product.getId());
         newProductRequestDto.setName(product.getName());
         newProductRequestDto.setPrice(product.getPrice());
         newProductRequestDto.setSellingPrice(product.getSellingPrice());

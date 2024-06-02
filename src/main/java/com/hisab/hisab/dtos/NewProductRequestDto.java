@@ -3,11 +3,12 @@ package com.hisab.hisab.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class NewProductRequestDto {
+    private Long id;
     private String name;
     private int price;
     private int sellingPrice;
@@ -15,9 +16,9 @@ public class NewProductRequestDto {
     private int minQuantity;
     private int quantity;
     private int packingTime;
-    private Date manufacturedDate;
-    private Date expiryDate;
-    private Date purchasedDate;
+    private LocalDate manufacturedDate;
+    private LocalDate expiryDate;
+    private LocalDate purchasedDate;
     private String barcode;
     private long categoryId;
     private long variantId;

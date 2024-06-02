@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +16,9 @@ public class Product extends BaseModel {
     private int price;
     private int sellingPrice;
     private int purchasePrice;
-    private Date manufacturedDate;
-    private Date expiryDate;
-    private Date purchasedDate;
+    private LocalDate manufacturedDate;
+    private LocalDate expiryDate;
+    private LocalDate purchasedDate;
 
     @ManyToOne
     private Barcode barcode;
