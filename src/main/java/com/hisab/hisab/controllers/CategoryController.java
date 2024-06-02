@@ -36,15 +36,4 @@ public class CategoryController {
 
         return responseDto;
     }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
-    }
-
-
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<Object> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.ALREADY_REPORTED);
-    }
 }
