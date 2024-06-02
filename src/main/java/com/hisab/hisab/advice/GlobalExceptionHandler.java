@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {ResourceAlreadyExistsException.class})
-    protected ResponseEntity<Object> handleResourceAlreadyExists(RuntimeException e, WebRequest request) {
+    protected ResponseEntity<Object> handleResourceAlreadyExists(ResourceAlreadyExistsException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 
