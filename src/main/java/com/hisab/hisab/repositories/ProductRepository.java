@@ -10,4 +10,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     <S extends Product> S save(S entity);
 
     List<Product> findAllByBarcode_CodeAndShop_Id(String code, Long shopId);
+
+    @Override
+    void deleteById(Long aLong);
 }

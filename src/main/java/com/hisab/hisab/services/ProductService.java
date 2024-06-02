@@ -105,4 +105,8 @@ public class ProductService {
     public List<Product> getProductByBarcodeAndShop(String barcode, Long shopId) {
         return productRepository.findAllByBarcode_CodeAndShop_Id(barcode, shopId);
     }
+
+    public void deleteProductById(Long productId) {
+        productRepository.deleteById(productId);
+    }
 }
